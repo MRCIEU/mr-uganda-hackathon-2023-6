@@ -46,4 +46,16 @@ TODO:
 - Aggregate results
 
 
+### Generate the MDD PRS using PRScsx
+Used PRS-CSx tool (https://github.com/getian107/PRScs).
+Prepared the GWAS ancestry summary statistics having the following column names SNP, A1, A2, BETA, SE. Removed NA values and converted allesles to uppercase.
+`d <- d[, .(SNP = rsid, A1 = EA, A2 = NEA, BETA, SE)]`
+`d[, `:=`(A1 = toupper(A1), A2 = toupper(A2))]`
+`d <- d[!is.na(SNP)]`
+```
+`bash PRScsx.sh`
+```
+Output files: 22 .txt files for each ancestry
+Concatenated output files from all 22 chromosomes and used then computed polygenic scores using PLINK's `--score`
+`plink --bfile mydata --score combined_PRS_AFR.txt 2 4 5 sum --out AFR_scores`
 
